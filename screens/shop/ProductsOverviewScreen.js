@@ -1,18 +1,22 @@
 import React from 'react';
-import { FlatList } from 'react-native';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-
-import { productsReducer } from './store/reducers/products';
-
-const rootReducer = combineReducers({
-  products: productsReducer,
-});
-
-const store = createStore(rootReducer);
+import { FlatList, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const ProductsOverviewScreen = (props) => {
-  return <Provider store={store}></Provider>;
+  const products = useSelector((state) => {
+    return state.products.availableProducts;
+  });
+  return (
+    <FlatList
+      data={products}
+      keyExtractor={(item) => item.id}
+      renderItem={(itemData) => <Text>{itemData.item.title}</Text>}
+    />
+  );
 };
+
+ProductsOverviewScreen.navigationOptions = {
+  headerTitle: 'All Products'
+}
 
 export default ProductsOverviewScreen;
